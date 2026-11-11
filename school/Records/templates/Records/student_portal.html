@@ -1,0 +1,157 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#172554">
+    <title>Student Portal | Campus</title>
+    <link rel="stylesheet" href="{% static 'Records/student_portal.css' %}">
+    <link rel="stylesheet" href="{% static 'Records/theme.css' %}">
+    <script src="{% static 'Records/student_portal.js' %}" defer></script>
+    <script src="{% static 'Records/theme.js' %}" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{% url 'portal-home' %}">
+            <span class="brand-mark">C</span>
+            <span>Campus<span class="brand-light">Portal</span></span>
+        </a>
+        <div class="top-actions">
+            <a class="back-link" href="{% url 'portal-home' %}">Main portal</a>
+            <span id="session-name" class="session-name">Student space</span>
+            <button class="button button-outline theme-toggle" type="button" data-theme-toggle aria-pressed="false">Dark mode</button>
+            <button id="logout-button" class="button button-outline" type="button" hidden>Sign out</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">YOUR STUDENT SPACE</p>
+                <h1>Everything you need<br>to keep <span>moving forward.</span></h1>
+                <p>Manage your profile, find your coursework, and turn in your assignments from one simple place.</p>
+                <div class="hero-points">
+                    <span><i>✓</i> Your profile, your details</span>
+                    <span><i>✓</i> Coursework in one view</span>
+                    <span><i>✓</i> Simple file submissions</span>
+                </div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+                <div class="art-card art-card-back"><span class="art-line wide"></span><span class="art-line"></span><span class="art-line short"></span></div>
+                <div class="art-card art-card-front"><div class="art-check">✓</div><span class="art-line wide"></span><span class="art-line"></span><span class="art-line short"></span><div class="art-pill"></div></div>
+                <span class="art-star star-one">✦</span><span class="art-star star-two">✦</span>
+            </div>
+        </section>
+
+        <section id="auth-section" class="auth-section">
+            <div class="auth-intro">
+                <p class="eyebrow">WELCOME TO YOUR PORTAL</p>
+                <h2>Pick up where<br>you left off.</h2>
+                <p>Sign in to your student account, or create one to get started. New accounts are automatically connected to a student profile.</p>
+                <div class="auth-help"><span class="help-icon">i</span><span>Creating an account also creates your student profile. If you already have a profile, ask an administrator to link your account.</span></div>
+            </div>
+            <div class="auth-card">
+                <div class="auth-tabs" role="tablist" aria-label="Account options">
+                    <button class="auth-tab active" type="button" data-auth-tab="login" role="tab" aria-selected="true">Sign in</button>
+                    <button class="auth-tab" type="button" data-auth-tab="signup" role="tab" aria-selected="false">Create account</button>
+                </div>
+                <form id="login-form" class="auth-form">
+                    <h3>Welcome back</h3>
+                    <p class="form-subtitle">Enter your student account details.</p>
+                    <label>Username
+                        <input name="username" autocomplete="username" placeholder="Your username" required>
+                    </label>
+                    <label>Password
+                        <input name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+                    </label>
+                    <button class="button button-primary" type="submit">Sign in <span aria-hidden="true">→</span></button>
+                    <p id="login-message" class="form-message" role="status"></p>
+                </form>
+
+                <form id="signup-form" class="auth-form" hidden>
+                    <h3>Create your account</h3>
+                    <p class="form-subtitle">Set up your student profile and account.</p>
+                    <label>Full name
+                        <input name="full_name" maxlength="20" autocomplete="name" placeholder="Your full name" required>
+                    </label>
+                    <label>Department
+                        <select name="depts" id="signup-department" required><option value="">Loading departments...</option></select>
+                    </label>
+                    <label>Age <span class="optional">(optional)</span>
+                        <input name="age" type="number" min="1" value="15">
+                    </label>
+                    <label>Username
+                        <input name="username" autocomplete="username" placeholder="Choose a username" required>
+                    </label>
+                    <label>Password
+                        <input name="password" type="password" autocomplete="new-password" placeholder="Choose a password" required>
+                    </label>
+                    <button class="button button-primary" type="submit">Create student account <span aria-hidden="true">→</span></button>
+                    <p id="signup-message" class="form-message" role="status"></p>
+                </form>
+            </div>
+        </section>
+
+        <section id="student-dashboard" class="student-dashboard" hidden>
+            <div class="dashboard-heading">
+                <div>
+                    <p class="eyebrow">STUDENT DASHBOARD</p>
+                    <h2>Good to see you, <span id="student-first-name">student</span>.</h2>
+                    <p>Here’s your profile and the work currently available to you.</p>
+                </div>
+                <span class="student-badge"><span class="badge-dot"></span>Student account</span>
+            </div>
+
+            <div class="dashboard-grid">
+                <section class="dashboard-card profile-card">
+                    <div class="card-heading">
+                        <div class="card-icon profile-icon">01</div>
+                        <div><p class="eyebrow">YOUR DETAILS</p><h3>Student profile</h3></div>
+                    </div>
+                    <form id="profile-form" class="profile-form">
+                        <label>Full name
+                            <input name="full_name" maxlength="20" required>
+                        </label>
+                        <label>Age
+                            <input name="age" type="number" min="1" required>
+                        </label>
+                        <label>Department
+                            <input id="profile-department" type="text" readonly>
+                        </label>
+                        <button class="button button-primary" type="submit">Save changes</button>
+                    </form>
+                    <p id="profile-message" class="form-message" role="status"></p>
+                </section>
+
+                <section class="dashboard-card assignments-card">
+                    <div class="card-heading">
+                        <div class="card-icon assignment-icon">02</div>
+                        <div><p class="eyebrow">YOUR COURSEWORK</p><h3>Available assignments</h3></div>
+                    </div>
+                    <p class="card-description">Assignments currently posted to the course catalog.</p>
+                    <div id="student-assignment-list" class="student-assignment-list" aria-live="polite">
+                        <div class="empty-state">Loading assignments...</div>
+                    </div>
+                </section>
+
+                <section class="dashboard-card submissions-card">
+                    <div class="card-heading">
+                        <div class="card-icon submission-icon">03</div>
+                        <div><p class="eyebrow">YOUR WORK</p><h3>Recent submissions</h3></div>
+                    </div>
+                    <div id="student-submission-list" class="student-submission-list" aria-live="polite">
+                        <div class="empty-state">Loading submissions...</div>
+                    </div>
+                    <p id="submission-message" class="form-message" role="status"></p>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <a class="brand footer-brand" href="{% url 'portal-home' %}"><span class="brand-mark">C</span><span>Campus<span class="brand-light">Portal</span></span></a>
+        <span>A little progress each day adds up.</span>
+    </footer>
+</body>
+</html>

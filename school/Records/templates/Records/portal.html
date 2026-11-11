@@ -1,0 +1,317 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#172554">
+    <title>Campus Portal</title>
+    <link rel="stylesheet" href="{% static 'Records/portal.css' %}">
+    <link rel="stylesheet" href="{% static 'Records/theme.css' %}">
+    <script src="{% static 'Records/portal.js' %}" defer></script>
+    <script src="{% static 'Records/theme.js' %}" defer></script>
+</head>
+<body>
+    {% if homepage_background %}
+        <div class="site-background" aria-hidden="true">
+            <img src="{{ homepage_background.image.url }}" alt="">
+        </div>
+    {% endif %}
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="{% url 'portal-home' %}">
+                <span class="brand-mark">C</span>
+                <span>Campus<span class="brand-light">Portal</span></span>
+            </a>
+            <p class="side-label">YOUR SPACE</p>
+            <nav class="side-nav" aria-label="Main navigation">
+                <a class="nav-link active" href="#overview" target="_blank" rel="noopener"><span class="nav-icon">01</span>Overview</a>
+                <a class="nav-link" href="#assignments" target="_blank" rel="noopener"><span class="nav-icon">02</span>Assignments</a>
+                <a class="nav-link" href="#attendance" target="_blank" rel="noopener"><span class="nav-icon">03</span>Attendance</a>
+                <a class="nav-link" href="{% url 'student-portal' %}" target="_blank" rel="noopener"><span class="nav-icon">04</span>Student portal</a>
+                <a class="nav-link nav-button" href="{% url 'department-directory-page' %}" target="_blank" rel="noopener"><span class="nav-icon">05</span>Departments</a>
+                <a id="catalog-nav-link" class="nav-link" href="#catalog" target="_blank" rel="noopener" hidden><span class="nav-icon">06</span>Catalog</a>
+            </nav>
+            <div class="sidebar-note">
+                <span class="note-dot"></span>
+                <p>One place for your courses, classwork, and daily progress.</p>
+            </div>
+            <div class="sidebar-footer">LEARN SOMETHING NEW TODAY</div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">STUDENT SERVICES</p>
+                    <h1>Learning, in one place.</h1>
+                </div>
+                <div class="topbar-actions">
+                    <span id="session-label" class="session-label">Guest session</span>
+                    <button class="button button-quiet theme-toggle" type="button" data-theme-toggle aria-pressed="false">Dark mode</button>
+                    <button id="logout-button" class="button button-quiet" type="button" hidden>Sign out</button>
+                </div>
+            </header>
+
+            <section id="overview" class="welcome-card">
+                <div class="welcome-copy">
+                    <p class="eyebrow eyebrow-light">YOUR CAMPUS DASHBOARD</p>
+                    <h2>Make today count.</h2>
+                    <p>Keep track of class assignments and stay up to date with what's happening in your courses.</p>
+                    <a class="button button-white" href="#assignments">Explore assignments <span aria-hidden="true">&rarr;</span></a>
+                </div>
+                <div class="welcome-decoration" aria-hidden="true">
+                    <span class="orbit orbit-one"></span>
+                    <span class="orbit orbit-two"></span>
+                    <span class="orbit orbit-three"></span>
+                    <span class="spark">✦</span>
+                </div>
+            </section>
+
+            <section id="homepage-flyers" class="content-section homepage-flyer" hidden>
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">CAMPUS UPDATES</p>
+                        <h2>Flyers &amp; announcements</h2>
+                    </div>
+                </div>
+                <div id="homepage-flyer-list" class="flyer-grid" aria-live="polite"></div>
+            </section>
+
+            <section class="stat-grid" aria-label="Portal summary">
+                <article class="stat-card">
+                    <span class="stat-icon icon-lilac">A</span>
+                    <div><p>Assignments</p><strong id="assignment-count">--</strong></div>
+                    <span class="stat-caption">available to view</span>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-icon icon-mint">C</span>
+                    <div><p>Courses</p><strong id="course-count">--</strong></div>
+                    <span class="stat-caption">in the catalog</span>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-icon icon-peach">S</span>
+                    <div><p>Students</p><strong id="student-count">--</strong></div>
+                    <span class="stat-caption">in the directory</span>
+                </article>
+            </section>
+
+            <section id="catalog" class="content-section" hidden>
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">SUPERUSER WORKSPACE</p>
+                        <h2>Manage departments and courses</h2>
+                        <p class="section-subtitle">Create departments, then assign each course to its department.</p>
+                    </div>
+                    <span class="permission-pill">Superuser only</span>
+                </div>
+                <div class="management-grid">
+                    <div class="form-panel">
+                        <div class="form-panel-heading">
+                            <div><p class="eyebrow">DEPARTMENTS</p><h3>Add a department</h3></div>
+                        </div>
+                        <form id="department-form" class="portal-form">
+                            <label>Department name
+                                <input name="name" type="text" maxlength="30" required>
+                            </label>
+                            <label>Date <span class="optional">(optional)</span>
+                                <input name="date" type="date">
+                            </label>
+                            <div class="field-wide form-actions">
+                                <button class="button button-primary" type="submit">Add department</button>
+                            </div>
+                        </form>
+                        <p id="department-message" class="form-message" role="status"></p>
+                    </div>
+                    <div class="form-panel">
+                        <div class="form-panel-heading">
+                            <div><p class="eyebrow">COURSES</p><h3>Add a course</h3></div>
+                        </div>
+                        <form id="course-form" class="portal-form">
+                            <label>Course name
+                                <input name="course_name" type="text" maxlength="20" required>
+                            </label>
+                            <label>Department
+                                <select name="dept" id="course-department" required>
+                                    <option value="">Loading departments...</option>
+                                </select>
+                            </label>
+                            <div class="field-wide form-actions">
+                                <button class="button button-primary" type="submit">Add course</button>
+                            </div>
+                        </form>
+                        <p id="course-message" class="form-message" role="status"></p>
+                    </div>
+                </div>
+                <div class="flyer-management">
+                    <div class="form-panel">
+                        <div class="form-panel-heading">
+                            <div><p class="eyebrow">HOMEPAGE</p><h3>Post a flyer</h3></div>
+                            <span class="permission-pill">Superuser only</span>
+                        </div>
+                        <p class="form-hint">Flyers are displayed on the homepage for everyone to see. Use a JPG, PNG, GIF, or WEBP image.</p>
+                        <form id="flyer-form" class="portal-form">
+                            <label>Flyer title
+                                <input name="title" type="text" maxlength="100" required>
+                            </label>
+                            <label>Image
+                                <input name="image" type="file" accept=".jpg,.jpeg,.png,.gif,.webp" required>
+                            </label>
+                            <label class="field-wide">Caption <span class="optional">(optional)</span>
+                                <textarea name="caption" rows="2" maxlength="300"></textarea>
+                            </label>
+                            <label class="field-wide">Destination link <span class="optional">(optional)</span>
+                                <input name="link" type="url" placeholder="https://example.com">
+                            </label>
+                            <div class="field-wide form-actions">
+                                <button class="button button-primary" type="submit">Publish flyer</button>
+                            </div>
+                        </form>
+                        <p id="flyer-message" class="form-message" role="status"></p>
+                    </div>
+                    <div class="form-panel">
+                        <div class="form-panel-heading">
+                            <div><p class="eyebrow">HOMEPAGE APPEARANCE</p><h3>Set the homepage background</h3></div>
+                            <span class="permission-pill">Superuser only</span>
+                        </div>
+                        <p class="form-hint">The image fills the page background behind the portal. Use a JPG, PNG, GIF, or WEBP image.</p>
+                        <form id="homepage-background-form" class="portal-form">
+                            <label class="field-wide">Background image
+                                <input name="image" type="file" accept=".jpg,.jpeg,.png,.gif,.webp" required>
+                            </label>
+                            <div class="field-wide form-actions">
+                                <button class="button button-primary" type="submit">Save background</button>
+                                <button id="remove-homepage-background" class="button button-quiet" type="button" hidden>Remove background</button>
+                            </div>
+                        </form>
+                        <p id="homepage-background-message" class="form-message" role="status"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="assignments" class="content-section">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">KEEP MOVING FORWARD</p>
+                        <h2>Assignments</h2>
+                        <p class="section-subtitle">Coursework and resources shared with your classes.</p>
+                        <p id="staff-submission-hint" class="section-subtitle" hidden>Student submissions appear here automatically.</p>
+                    </div>
+                    <button class="button button-primary" type="button" data-toggle="assignment-form">＋ Post assignment</button>
+                </div>
+
+                <div id="assignment-form-panel" class="form-panel" hidden>
+                    <div class="form-panel-heading">
+                        <div><p class="eyebrow">STAFF WORKSPACE</p><h3>Post an assignment</h3></div>
+                        <span class="permission-pill">Admin / staff</span>
+                    </div>
+                    <p class="form-hint">Sign in with an administrator or staff account to publish an assignment. Attachments are optional.</p>
+                    <form id="assignment-form" class="portal-form">
+                        <label>Course
+                            <select name="course" id="assignment-course" required><option value="">Loading courses...</option></select>
+                        </label>
+                        <label>Department
+                            <select name="department" id="assignment-department" required><option value="">Loading departments...</option></select>
+                        </label>
+                        <label>Title
+                            <input name="title" type="text" maxlength="200" placeholder="e.g. Week 4 lab report" required>
+                        </label>
+                        <label class="field-wide">Description
+                            <textarea name="description" rows="3" placeholder="Share instructions or useful context"></textarea>
+                        </label>
+                        <label>Due date
+                            <input name="due_date" type="date" required>
+                        </label>
+                        <label>Attachment <span class="optional">(optional)</span>
+                            <input name="attachment" type="file">
+                        </label>
+                        <div class="field-wide form-actions">
+                            <button class="button button-primary" type="submit">Publish assignment</button>
+                            <button class="button button-quiet" type="button" data-toggle="assignment-form">Cancel</button>
+                        </div>
+                    </form>
+                    <p id="assignment-message" class="form-message" role="status"></p>
+                </div>
+
+                <div id="assignment-list" class="assignment-grid" aria-live="polite">
+                    <div class="empty-card">Loading assignments...</div>
+                </div>
+            </section>
+
+            <section id="attendance" class="content-section attendance-section">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">CLASSROOM CHECK-IN</p>
+                        <h2>Attendance</h2>
+                        <p class="section-subtitle">Attendance tools are available to administrators and staff.</p>
+                    </div>
+                </div>
+
+                <div class="attendance-layout">
+                    <div class="attendance-intro">
+                        <div class="attendance-symbol">✓</div>
+                        <h3>Every day adds up.</h3>
+                        <p>Staff can record a student's daily attendance. Each student can have one record per date.</p>
+                        <div class="status-legend">
+                            <span><i class="legend-dot present"></i>Present</span>
+                            <span><i class="legend-dot late"></i>Late</span>
+                            <span><i class="legend-dot absent"></i>Absent</span>
+                            <span><i class="legend-dot excused"></i>Excused</span>
+                        </div>
+                    </div>
+                    <div class="attendance-panel">
+                        <div class="panel-heading">
+                            <div><p class="eyebrow">STAFF WORKSPACE</p><h3>Record attendance</h3></div>
+                            <span class="permission-pill">Admin / staff</span>
+                        </div>
+                        <form id="attendance-form" class="portal-form attendance-form">
+                            <label>Student
+                                <select name="student" id="attendance-student" required><option value="">Loading students...</option></select>
+                            </label>
+                            <label>Date
+                                <input name="date" id="attendance-date" type="date" required>
+                            </label>
+                            <label>Status
+                                <select name="status" required>
+                                    <option value="present">Present</option>
+                                    <option value="late">Late</option>
+                                    <option value="absent">Absent</option>
+                                    <option value="excused">Excused</option>
+                                </select>
+                            </label>
+                            <button class="button button-primary" type="submit">Save attendance</button>
+                        </form>
+                        <p id="attendance-message" class="form-message" role="status"></p>
+                    </div>
+                </div>
+
+                <div class="records-heading">
+                    <h3>Recent attendance</h3>
+                    <span id="attendance-record-count" class="record-count">Sign in to view</span>
+                </div>
+                <div id="attendance-list" class="attendance-list">
+                    <div class="empty-card">Sign in with a staff account to view attendance records.</div>
+                </div>
+            </section>
+
+            <section id="login" class="login-section">
+                <div class="login-copy">
+                    <p class="eyebrow">STAFF ACCESS</p>
+                    <h2>Have a staff account?</h2>
+                    <p>Sign in to post assignments and manage attendance. Student accounts can browse published assignments.</p>
+                </div>
+                <form id="login-form" class="login-form">
+                    <label>Username<input name="username" autocomplete="username" required></label>
+                    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+                    <button class="button button-primary" type="submit">Sign in</button>
+                    <p id="login-message" class="form-message" role="status"></p>
+                </form>
+            </section>
+
+            <footer class="page-footer">
+                <span>Campus Portal</span>
+                <span>Built for better learning, every day.</span>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>

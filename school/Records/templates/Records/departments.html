@@ -1,0 +1,63 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#172554">
+    <title>Departments | Campus Portal</title>
+    <link rel="stylesheet" href="{% static 'Records/portal.css' %}">
+    <link rel="stylesheet" href="{% static 'Records/theme.css' %}">
+    <script src="{% static 'Records/theme.js' %}" defer></script>
+</head>
+<body>
+    <main class="directory-page">
+        <header class="directory-page-header">
+            <div>
+                <p class="eyebrow">CAMPUS DIRECTORY</p>
+                <h1>Departments</h1>
+                <p class="section-subtitle">Explore the students and courses in each department.</p>
+            </div>
+            <div class="directory-page-actions">
+                <button class="button button-quiet theme-toggle" type="button" data-theme-toggle aria-pressed="false">Dark mode</button>
+                <a class="button button-primary" href="{% url 'portal-home' %}">Back to homepage</a>
+            </div>
+        </header>
+
+        <div class="department-directory-grid">
+            {% for department in departments %}
+                <article class="department-card">
+                    <div class="department-card-heading">
+                        <h2>{{ department.name }}</h2>
+                        <span class="department-count">{{ department.dept.all|length }} student{{ department.dept.all|length|pluralize }}</span>
+                    </div>
+                    <div class="department-card-content">
+                        <section class="department-group">
+                            <h3>Students</h3>
+                            <ul class="directory-list">
+                                {% for student in department.dept.all %}
+                                    <li>{{ student.full_name }}</li>
+                                {% empty %}
+                                    <li class="directory-empty">No students in this department yet.</li>
+                                {% endfor %}
+                            </ul>
+                        </section>
+                        <section class="department-group">
+                            <h3>Courses</h3>
+                            <ul class="directory-list">
+                                {% for course in department.depts.all %}
+                                    <li>{{ course.course_name }}</li>
+                                {% empty %}
+                                    <li class="directory-empty">No courses in this department yet.</li>
+                                {% endfor %}
+                            </ul>
+                        </section>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-card">No departments have been added yet.</div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

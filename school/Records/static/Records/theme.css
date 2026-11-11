@@ -1,0 +1,149 @@
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --ink: #e8edf7;
+    --muted: #aab4c7;
+    --line: #303b50;
+    --paper: #111827;
+}
+
+html[data-theme="dark"] body {
+    background: var(--paper);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .form-panel,
+html[data-theme="dark"] .attendance-panel,
+html[data-theme="dark"] .assignment-card,
+html[data-theme="dark"] .attendance-row,
+html[data-theme="dark"] .login-section,
+html[data-theme="dark"] .department-card,
+html[data-theme="dark"] .auth-card,
+html[data-theme="dark"] .dashboard-card {
+    border-color: var(--line);
+    background-color: #1b2638;
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .directory-page-header h1,
+html[data-theme="dark"] .section-heading h2,
+html[data-theme="dark"] .form-panel-heading h3,
+html[data-theme="dark"] .panel-heading h3,
+html[data-theme="dark"] .assignment-card h3,
+html[data-theme="dark"] .department-card-heading h2,
+html[data-theme="dark"] .auth-form h3,
+html[data-theme="dark"] .dashboard-heading h2,
+html[data-theme="dark"] .card-heading h3,
+html[data-theme="dark"] .staff-submission-details strong {
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .section-subtitle,
+html[data-theme="dark"] .form-hint,
+html[data-theme="dark"] .assignment-card p,
+html[data-theme="dark"] .attendance-row time,
+html[data-theme="dark"] .login-copy p:not(.eyebrow),
+html[data-theme="dark"] .department-group li,
+html[data-theme="dark"] .directory-page-header .section-subtitle,
+html[data-theme="dark"] .dashboard-heading > div > p:last-child,
+html[data-theme="dark"] .card-description,
+html[data-theme="dark"] .student-submission span,
+html[data-theme="dark"] .form-subtitle,
+html[data-theme="dark"] .staff-submission-details time,
+html[data-theme="dark"] .staff-submission-comment {
+    color: #aab4c7;
+}
+
+html[data-theme="dark"] .portal-form label,
+html[data-theme="dark"] .login-form label,
+html[data-theme="dark"] .auth-form label,
+html[data-theme="dark"] .profile-form label {
+    color: #c4cede;
+}
+
+html[data-theme="dark"] .portal-form input,
+html[data-theme="dark"] .portal-form select,
+html[data-theme="dark"] .portal-form textarea,
+html[data-theme="dark"] .login-form input,
+html[data-theme="dark"] .auth-form input,
+html[data-theme="dark"] .auth-form select,
+html[data-theme="dark"] .profile-form input {
+    border-color: #3a465c;
+    background-color: #121b2a;
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .auth-form input[readonly],
+html[data-theme="dark"] .profile-form input[readonly] {
+    background-color: #202b3d;
+}
+
+html[data-theme="dark"] .auth-help,
+html[data-theme="dark"] .auth-tabs,
+html[data-theme="dark"] .auth-tab.active,
+html[data-theme="dark"] .staff-submission-row {
+    border-color: var(--line);
+    background-color: #253147;
+    color: #d3dbea;
+}
+
+html[data-theme="dark"] .button-quiet,
+html[data-theme="dark"] .button-outline {
+    border-color: #3a465c;
+    background-color: #29364b;
+    color: #e1e7f2;
+}
+
+html[data-theme="dark"] .department-card-heading,
+html[data-theme="dark"] .assignment-footer,
+html[data-theme="dark"] .assignment-submissions {
+    border-color: var(--line);
+}
+
+html[data-theme="dark"] .welcome-card {
+    background: linear-gradient(110deg, #39358d 0%, #514bb1 58%, #635daf 100%);
+}
+
+html[data-theme="dark"] .hero {
+    background: linear-gradient(110deg, #282844, #292a48 58%, #233d39);
+}
+
+html[data-theme="dark"] .hero-copy > p:not(.eyebrow),
+html[data-theme="dark"] .hero-points,
+html[data-theme="dark"] .auth-intro > p:not(.eyebrow),
+html[data-theme="dark"] .back-link,
+html[data-theme="dark"] .session-name {
+    color: #c0c9d9;
+}
+
+html[data-theme="dark"] .art-card-front,
+html[data-theme="dark"] .flyer-card,
+html[data-theme="dark"] .empty-card {
+    border-color: var(--line);
+    background-color: #1b2638;
+    color: #d0d8e6;
+}
+
+html[data-theme="dark"] .art-card-back {
+    border-color: #44445e;
+    background-color: #343455;
+}
+
+html[data-theme="dark"] .student-badge {
+    border-color: #315343;
+    background-color: #1d382e;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    body,
+    .topbar,
+    .stat-card,
+    .form-panel,
+    .assignment-card,
+    .attendance-row,
+    .dashboard-card,
+    .auth-card {
+        transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+    }
+}
